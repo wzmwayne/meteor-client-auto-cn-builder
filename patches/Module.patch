@@ -12,3 +12,4 @@ index f57182d99..ff2e89c33 100644
 +        this.description = Utils.tr(description);
          this.aliases = aliases;
          this.color = Color.fromHsv(Utils.random(0.0, 360.0), 0.35, 1);
+ 

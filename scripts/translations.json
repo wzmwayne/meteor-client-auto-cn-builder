@@ -1,8 +1,8 @@
 {
   "(highlight)%s": "(highlight)%s(default)",
   "(highlight)Worker %s(default): %s.": "(highlight)工作器 %s(default): %s。",
-  "+": "+",
-  "-": "-",
+  "+": null,
+  "-": null,
   "--- Bound Modules ((highlight)%d(default)) ---": "--- 已绑定模块 ((highlight)%d(default)) ---",
   "--- Commands ((highlight)%d(default)) ---": "--- 命令 ((highlight)%d(default)) ---",
   "--- Modules ((highlight)%d(default)) ---": "--- 模块 ((highlight)%d(default)) ---",
@@ -11,7 +11,7 @@
   "2nd corner of the cuboid": "长方体第二个角",
   ":": "：",
   ">": ">",
-  "A.": "A.",
+  "A.": "一个。",
   "A:": "A：",
   "Acceleration": "加速度",
   "Acceleration Start": "加速起始",
@@ -1057,7 +1057,7 @@
   "Gui Move": "GUI移动",
   "Guide": "指南",
   "Guis": "GUI界面",
-  "HUD": "HUD",
+  "HUD": "平视显示器",
   "Hand": "手",
   "Hand Color": "Hand颜色",
   "Hand For Breeding": "繁殖用物品",
@@ -1535,7 +1535,7 @@
   "Messages to use for spam.": "用于刷屏的消息。",
   "Messages used for the first line.": "用于第一行的消息。",
   "Messages used for the second line.": "用于第二行的消息。",
-  "Meteor": "Meteor",
+  "Meteor": "流星",
   "Middle Click Extra": "中键附加功能",
   "Middle click action is disabled in Creative mode.": "创造模式下中键操作已禁用。",
   "Min Count": "最小数量",
@@ -2349,7 +2349,7 @@
   "Stack": "堆叠",
   "Stacks boss bars and adds a counter to the text.": "堆叠Boss栏并在文字中添加计数器。",
   "Stacks boss bars to make your HUD less cluttered.": "堆叠Boss栏以减少HUD杂乱。",
-  "Starscript": "Starscript",
+  "Starscript": "星脚本",
   "Start": "开始",
   "Start Line Color": "起始线颜色",
   "Start Side Color": "起始面颜色",
@@ -3211,5 +3211,5 @@
   "player.get_stat() requires 1 argument, got %d.": "player.get_stat()需要1个参数，得到了%d个。",
   "player.has_potion_effect() requires 1 argument, got %d.": "player.has_potion_effect()需要1个参数，得到了%d个。",
   "slider-handle": "滑块手柄",
-  "{} {}": "{} {}"
+  "{} {}": null
 }

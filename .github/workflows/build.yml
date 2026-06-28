@@ -19,6 +19,9 @@ on:
         type: boolean
         default: false
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,6 +36,7 @@ jobs:
           repository: wzmwayne/meteor-client-auto-cn-builder
           path: builder
           token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
 
       - name: Checkout upstream Meteor Client
         uses: actions/checkout@v6
@@ -100,5 +104,6 @@ jobs:
             echo "No changes to translations.json"
           else
             git commit -m "sync: update translations from upstream ${{ inputs.upstream_ref }}"
+            git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/wzmwayne/meteor-client-auto-cn-builder.git"
             git push
           fi

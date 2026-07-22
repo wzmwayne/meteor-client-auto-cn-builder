@@ -1,5 +1,5 @@
 diff --git a/src/main/java/meteordevelopment/meteorclient/gui/themes/meteor/widgets/WMeteorModule.java b/src/main/java/meteordevelopment/meteorclient/gui/themes/meteor/widgets/WMeteorModule.java
-index 1bf15b2..3f7ab3a 100644
+index 1bf15b2..9bcb510 100644
 --- a/src/main/java/meteordevelopment/meteorclient/gui/themes/meteor/widgets/WMeteorModule.java
 +++ b/src/main/java/meteordevelopment/meteorclient/gui/themes/meteor/widgets/WMeteorModule.java
 @@ -10,6 +10,7 @@ import meteordevelopment.meteorclient.gui.themes.meteor.MeteorGuiTheme;
@@ -10,11 +10,12 @@ index 1bf15b2..3f7ab3a 100644
  import meteordevelopment.meteorclient.systems.modules.Module;
  import net.minecraft.util.Mth;
  
-@@ -89,6 +90,6 @@ public class WMeteorModule extends WPressable implements MeteorWidget {
-             x += w - titleWidth;
-         }
+@@ -29,7 +30,7 @@ public class WMeteorModule extends WPressable implements MeteorWidget {
  
--        renderer.text(title, x, y + pad, theme.textColor.get(), false);
-+        renderer.text(Utils.trIfPresent(title), x, y + pad, theme.textColor.get(), false);
-     }
- }
+     public WMeteorModule(Module module, String title) {
+         this.module = module;
+-        this.title = title;
++        this.title = Utils.trIfPresent(title);
+         this.tooltip = module.description;
+ 
+         if (module.isActive()) {

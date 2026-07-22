@@ -1,14 +1,16 @@
 diff --git a/src/main/java/meteordevelopment/meteorclient/gui/themes/meteor/widgets/WMeteorModule.java b/src/main/java/meteordevelopment/meteorclient/gui/themes/meteor/widgets/WMeteorModule.java
+index 1bf15b2..3f7ab3a 100644
 --- a/src/main/java/meteordevelopment/meteorclient/gui/themes/meteor/widgets/WMeteorModule.java
 +++ b/src/main/java/meteordevelopment/meteorclient/gui/themes/meteor/widgets/WMeteorModule.java
-@@ -10,6 +10,7 @@ import meteordevelopment.meteorclient.gui.utils.AlignmentX;
+@@ -10,6 +10,7 @@ import meteordevelopment.meteorclient.gui.themes.meteor.MeteorGuiTheme;
+ import meteordevelopment.meteorclient.gui.themes.meteor.MeteorWidget;
+ import meteordevelopment.meteorclient.gui.utils.AlignmentX;
  import meteordevelopment.meteorclient.gui.widgets.pressable.WPressable;
- import meteordevelopment.meteorclient.systems.modules.Module;
 +import meteordevelopment.meteorclient.utils.Utils;
+ import meteordevelopment.meteorclient.systems.modules.Module;
  import net.minecraft.util.Mth;
  
- import static meteordevelopment.meteorclient.MeteorClient.mc;
-@@ -83,7 +84,7 @@ public class WMeteorModule extends WPressable implements MeteorWidget {
+@@ -89,6 +90,6 @@ public class WMeteorModule extends WPressable implements MeteorWidget {
              x += w - titleWidth;
          }
  

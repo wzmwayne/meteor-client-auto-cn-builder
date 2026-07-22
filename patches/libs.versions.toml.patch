@@ -1,0 +1,13 @@
+diff --git a/gradle/libs.versions.toml b/gradle/libs.versions.toml
+index 2925bc8..e1bfe3b 100644
+--- a/gradle/libs.versions.toml
++++ b/gradle/libs.versions.toml
+@@ -45,7 +45,7 @@ sodium = { module = "maven.modrinth:sodium", version.ref = "sodium" }
+ lithium = { module = "maven.modrinth:lithium", version.ref = "lithium" }
+ iris = { module = "maven.modrinth:iris", version.ref = "iris" }
+ baritone = { module = "meteordevelopment:baritone", version.ref = "baritone" }
+-modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
++modmenu = { module = "maven.modrinth:modmenu", version.ref = "modmenu" }
+ viafabricplus = { module = "com.viaversion:viafabricplus", version.ref = "viafabricplus" }
+ viafabricplus-api = { module = "com.viaversion:viafabricplus-api", version.ref = "viafabricplus" }
+ 

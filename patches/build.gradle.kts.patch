@@ -1,0 +1,15 @@
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 3f31158..7def0b6 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -20,10 +20,6 @@ repositories {
+         name = "meteor-maven-snapshots"
+         url = uri("https://maven.meteordev.org/snapshots")
+     }
+-    maven {
+-        name = "Terraformers"
+-        url = uri("https://maven.terraformersmc.com")
+-    }
+     maven {
+         name = "ViaVersion"
+         url = uri("https://repo.viaversion.com")

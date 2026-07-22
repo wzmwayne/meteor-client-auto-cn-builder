@@ -21,14 +21,14 @@ index 7a8e91bcd..70488e2b3 100644
  
      private static final ProjectionMatrixBuffer matrixBuffer = new ProjectionMatrixBuffer("meteor-projection-matrix");
  
-+    private static final Map<String, String> TRANSLATIONS = new HashMap<>();
++    private static Map<String, String> TRANSLATIONS = null;
 +    private static final Gson GSON = new Gson();
 +
      private Utils() {
      }
  
 +    public static void loadTranslations() {
-+        TRANSLATIONS.clear();
++        TRANSLATIONS = new HashMap<>();
 +        try (InputStream in = Utils.class.getResourceAsStream("/assets/meteor-client/lang/zh_cn_full.json")) {
 +            if (in != null) {
 +                Map<String, String> map = GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), new TypeToken<Map<String, String>>() {}.getType());
@@ -39,11 +39,13 @@ index 7a8e91bcd..70488e2b3 100644
 +        }
 +    }
 +
-+    public static String tr(String english) {
-+        return TRANSLATIONS.getOrDefault(english, english);
++    public static String tr(String text) {
++        if (TRANSLATIONS == null) loadTranslations();
++        return TRANSLATIONS.getOrDefault(text, text);
 +    }
 +
 +    public static String trIfPresent(String text) {
++        if (TRANSLATIONS == null) loadTranslations();
 +        String translated = TRANSLATIONS.get(text);
 +        return translated != null ? translated : text;
 +    }

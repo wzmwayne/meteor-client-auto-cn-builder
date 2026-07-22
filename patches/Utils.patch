@@ -1,13 +1,14 @@
 diff --git a/src/main/java/meteordevelopment/meteorclient/utils/Utils.java b/src/main/java/meteordevelopment/meteorclient/utils/Utils.java
-index 7a8e91bcd..70488e2b3 100644
+index 57f7020..6615730 100644
 --- a/src/main/java/meteordevelopment/meteorclient/utils/Utils.java
 +++ b/src/main/java/meteordevelopment/meteorclient/utils/Utils.java
-@@ -63,10 +63,14 @@ import org.jetbrains.annotations.Range;
+@@ -62,11 +62,15 @@ import org.apache.commons.lang3.StringUtils;
+ import org.jetbrains.annotations.Range;
  import org.joml.Matrix4f;
  import org.joml.Vector3d;
- 
 +import com.google.gson.Gson;
 +import com.google.gson.reflect.TypeToken;
+
  import java.io.File;
  import java.io.IOException;
  import java.io.InputStream;
@@ -17,16 +18,16 @@ index 7a8e91bcd..70488e2b3 100644
  import java.util.*;
  import java.util.regex.Pattern;
  import java.util.stream.Collectors;
-@@ -86,9 +90,33 @@ public class Utils {
- 
+@@ -86,8 +90,34 @@ public class Utils {
+
      private static final ProjectionMatrixBuffer matrixBuffer = new ProjectionMatrixBuffer("meteor-projection-matrix");
- 
+
 +    private static Map<String, String> TRANSLATIONS = null;
 +    private static final Gson GSON = new Gson();
 +
      private Utils() {
      }
- 
++
 +    public static void loadTranslations() {
 +        TRANSLATIONS = new HashMap<>();
 +        try (InputStream in = Utils.class.getResourceAsStream("/assets/meteor-client/lang/zh_cn_full.json")) {
@@ -49,7 +50,6 @@ index 7a8e91bcd..70488e2b3 100644
 +        String translated = TRANSLATIONS.get(text);
 +        return translated != null ? translated : text;
 +    }
-+
+
      @PreInit
      public static void init() {
-         MeteorClient.EVENT_BUS.subscribe(Utils.class);

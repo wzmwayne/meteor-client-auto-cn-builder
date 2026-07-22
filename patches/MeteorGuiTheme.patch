@@ -1,5 +1,5 @@
 diff --git a/src/main/java/meteordevelopment/meteorclient/gui/themes/meteor/MeteorGuiTheme.java b/src/main/java/meteordevelopment/meteorclient/gui/themes/meteor/MeteorGuiTheme.java
-index b71695891..a1177f851 100644
+index b716958..a1177f8 100644
 --- a/src/main/java/meteordevelopment/meteorclient/gui/themes/meteor/MeteorGuiTheme.java
 +++ b/src/main/java/meteordevelopment/meteorclient/gui/themes/meteor/MeteorGuiTheme.java
 @@ -10,6 +10,7 @@ import meteordevelopment.meteorclient.gui.DefaultSettingsWidgetFactory;

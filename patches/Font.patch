@@ -2,6 +2,12 @@ diff --git a/src/main/java/meteordevelopment/meteorclient/renderer/text/Font.jav
 index 7886610..13cff69 100644
 --- a/src/main/java/meteordevelopment/meteorclient/renderer/text/Font.java
 +++ b/src/main/java/meteordevelopment/meteorclient/renderer/text/Font.java
+@@ -29,7 +29,7 @@ public class Font {
+     private final Int2ObjectOpenHashMap<CharData> charMap = new Int2ObjectOpenHashMap<>();
+-    private static final int size = 2048;
++    private static final int size = 4096;
+ 
+     public Font(ByteBuffer buffer, int height) {
 @@ -41,7 +41,8 @@ public class Font {
              STBTTPackedchar.create(128), // Latin Extended-A
              STBTTPackedchar.create(144), // Greek and Coptic

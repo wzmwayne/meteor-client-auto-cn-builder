@@ -63,7 +63,6 @@ index b716958..a1177f8 100644
  
      @Override
 @@ -268,7 +274,7 @@ public class MeteorGuiTheme extends GuiTheme {
- 
      @Override
      public WSection section(String title, boolean expanded, WWidget headerWidget) {
 -        return w(new WMeteorSection(title, expanded, headerWidget));

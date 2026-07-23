@@ -9,7 +9,7 @@ on:
         type: string
         default: ''
       upstream_ref:
-        description: Upstream branch/tag/commit
+        description: 'Upstream branch/tag/commit (e.g. 1.21.1, master)'
         required: false
         type: string
         default: master

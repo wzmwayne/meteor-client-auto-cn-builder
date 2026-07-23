@@ -9,7 +9,7 @@
 | `patches/*.patch` **(7 个)** | 对上游文件的补丁（翻译、字体、字形） |
 | `scripts/translate.py` | 扫描 Java 源码提取英文字符串 → 查 `translations.json` → API fallback → 输出 `zh_cn_full.json` |
 | `scripts/translations.json` | 3215 条硬编码翻译表，API 新增的翻译会自动写回此文件；3 条 null（`"+"`、`"-"`、`"{} {}"`）表示保持原文 |
-| `fonts/WenQuanYi Zen Hei.ttf` | 完整文泉驿正黑字体（17MB，包含全部字形防乱码） |
+| `fonts/WenQuanYi Micro Hei.ttf` | 文泉驿米黑字体（4.5MB，包含全部字形防乱码） |
 | `.github/workflows/build.yml` | 唯一构建方式 |
 
 ## 构建方式（仅 GitHub Actions 手动触发）
@@ -36,7 +36,7 @@ gh workflow run build.yml -R wzmwayne/meteor-client-auto-cn-builder
 ## 补丁概况（7 个）
 
 - **翻译核心**: `Utils.patch`（添加 `TRANSLATIONS` 映射表 + `loadTranslations()` + `tr()`/`trIfPresent()`，懒加载翻译文件）+ `MeteorGuiTheme.patch` + `WMeteorModule.patch`（在 `label()`、`button()`、`tooltip()`、`window()`、`section()`、`WMeteorModule` 标题等 GUI 组件中调用 `trIfPresent()`，覆盖全部 UI 文本）
-- **字体**: `Fonts.patch`（内置 WenQuanYi Zen Hei 并设为默认）、`Font.patch`（CJK 字形范围 U+4E00–U+9FFF）、`AtlasSize.patch`（纹理图集从 2048→4096 以容纳 CJK 字形）、`FontBaseline.patch`（统一不同字体间的基线）
+- **字体**: `Fonts.patch`（内置 WenQuanYi Micro Hei 并设为默认）、`Font.patch`（CJK 字形范围 U+4E00–U+9FFF）、`AtlasSize.patch`（纹理图集从 2048→4096 以容纳 CJK 字形）、`FontBaseline.patch`（统一不同字体间的基线）
 - 补丁紧跟上游 master，上游代码变更可能导致 `git apply` 失败，需手动修复
 - 翻译脚本扫描 `src/main/java/**/*.java`（约 949 个文件），每次运行约 1-3 分钟
 - `translations.json` 中 3 个条目值为 `null`（`"+"`、`"-"`、`"{} {}"`），表示保持原文不翻译，不要改动

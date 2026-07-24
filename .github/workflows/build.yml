@@ -13,6 +13,11 @@ on:
         required: false
         type: string
         default: master
+      skip_translate:
+        description: 'Skip translation step: patches + build only (no Chinese strings)'
+        required: false
+        type: boolean
+        default: false
       skip_sync:
         description: Skip syncing translations back to repo
         required: false
@@ -61,16 +66,30 @@ jobs:
       - name: Apply patches
         working-directory: meteor-client
         run: |
+          TRANSLATE_PATCHES="Utils.patch MeteorGuiTheme.patch WMeteorModule.patch"
+          SKIP_TRANSLATE="${{ inputs.skip_translate }}"
           for p in ../builder/patches/*.patch; do
-            echo "Applying $(basename $p)..."
+            name=$(basename "$p")
+            if [ "$SKIP_TRANSLATE" = "true" ]; then
+              skip=false
+              for tp in $TRANSLATE_PATCHES; do
+                if [ "$name" = "$tp" ]; then skip=true; break; fi
+              done
+              if [ "$skip" = "true" ]; then
+                echo "Skipping $name (translate skipped)"
+                continue
+              fi
+            fi
+            echo "Applying $name..."
             if ! git apply "$p"; then
-              echo "::error::Failed to apply $(basename $p) - upstream may have changed"
+              echo "::error::Failed to apply $name - upstream may have changed"
               exit 1
             fi
           done
           echo "All patches applied successfully"
 
       - name: Run translation
+        if: ${{ !inputs.skip_translate }}
         working-directory: meteor-client
         run: |
           pip install deep-translator -q
@@ -93,7 +112,7 @@ jobs:
           retention-days: 30
 
       - name: Sync translations back to builder repo
-        if: ${{ !inputs.skip_sync }}
+        if: ${{ !inputs.skip_translate && !inputs.skip_sync }}
         working-directory: builder
         run: |
           cp ../meteor-client/scripts/translations.json scripts/translations.json

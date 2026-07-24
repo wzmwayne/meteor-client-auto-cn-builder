@@ -21,17 +21,18 @@ gh workflow run build.yml -R wzmwayne/meteor-client-auto-cn-builder
 参数：
 - `upstream_ref` — 上游分支/tag/commit（默认 `master`）
 - `build_number` — 构建号（默认 `cn-$(date +%Y%m%d%H%M)`）
+- `skip_translate` — `true` 跳过翻译，仅打补丁+编译（默认 `false`）
 - `skip_sync` — `true` 跳过翻译回写（默认 `false`）
 
 ## CI 流程
 
 1. 检出 builder 仓库 + 上游 meteor-client（`master`）
 2. `cp patches/*.patch scripts/ fonts/` 到上游目录
-3. `git apply *.patch` 打所有补丁（⚠️ 使用 `git apply`，不是 `patch` 命令）
-4. `pip install deep-translator -q && python3 scripts/translate.py`
+3. `git apply *.patch` 打补丁（`skip_translate=true` 时跳过 `Utils.patch`、`MeteorGuiTheme.patch`、`WMeteorModule.patch`）
+4. `pip install deep-translator -q && python3 scripts/translate.py`（`skip_translate=true` 时跳过）
 5. `./gradlew build -Pbuild_number=... --no-daemon`（JDK 25，非 LTS）
 6. 上传 `meteor-client/build/libs/*.jar`（保留 30 天）
-7. 自动提交 `translations.json` 回本仓库（除非 `skip_sync=true`）
+7. 自动提交 `translations.json` 回本仓库（除非 `skip_sync=true` 或 `skip_translate=true`）
 
 ## 补丁概况（7 个）
 

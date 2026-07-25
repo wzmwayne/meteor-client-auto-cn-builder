@@ -3,6 +3,15 @@ name: Build Chinese Meteor Client
 on:
   workflow_dispatch:
     inputs:
+      mode:
+        description: Build mode
+        required: false
+        type: choice
+        options:
+          - full
+          - patch-only
+          - compile-original
+        default: full
       build_number:
         description: Build number
         required: false
@@ -13,11 +22,6 @@ on:
         required: false
         type: string
         default: master
-      skip_translate:
-        description: 'Skip translation step: patches + build only (no Chinese strings)'
-        required: false
-        type: boolean
-        default: false
       skip_sync:
         description: Skip syncing translations back to repo
         required: false
@@ -57,6 +61,7 @@ jobs:
           distribution: temurin
 
       - name: Copy patches, scripts, fonts to upstream checkout
+        if: ${{ inputs.mode != 'compile-original' }}
         run: |
           cp -r builder/patches/*.patch meteor-client/
           cp -r builder/scripts/ meteor-client/scripts/
@@ -64,19 +69,19 @@ jobs:
           cp builder/fonts/*.ttf "meteor-client/src/main/resources/assets/meteor-client/fonts/"
 
       - name: Apply patches
+        if: ${{ inputs.mode != 'compile-original' }}
         working-directory: meteor-client
         run: |
           TRANSLATE_PATCHES="Utils.patch MeteorGuiTheme.patch WMeteorModule.patch"
-          SKIP_TRANSLATE="${{ inputs.skip_translate }}"
           for p in ../builder/patches/*.patch; do
             name=$(basename "$p")
-            if [ "$SKIP_TRANSLATE" = "true" ]; then
+            if [ "${{ inputs.mode }}" = "patch-only" ]; then
               skip=false
               for tp in $TRANSLATE_PATCHES; do
                 if [ "$name" = "$tp" ]; then skip=true; break; fi
               done
               if [ "$skip" = "true" ]; then
-                echo "Skipping $name (translate skipped)"
+                echo "Skipping $name (patch-only mode)"
                 continue
               fi
             fi
@@ -89,7 +94,7 @@ jobs:
           echo "All patches applied successfully"
 
       - name: Run translation
-        if: ${{ !inputs.skip_translate }}
+        if: ${{ inputs.mode == 'full' }}
         working-directory: meteor-client
         run: |
           pip install deep-translator -q
@@ -107,12 +112,12 @@ jobs:
       - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
-          name: meteor-client-chinese-${{ github.run_id }}
+          name: meteor-client-${{ inputs.mode }}-${{ github.run_id }}
           path: meteor-client/build/libs/*.jar
           retention-days: 30
 
       - name: Sync translations back to builder repo
-        if: ${{ !inputs.skip_translate && !inputs.skip_sync }}
+        if: ${{ inputs.mode == 'full' && !inputs.skip_sync }}
         working-directory: builder
         run: |
           cp ../meteor-client/scripts/translations.json scripts/translations.json

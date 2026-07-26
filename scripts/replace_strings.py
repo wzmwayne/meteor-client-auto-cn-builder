@@ -35,11 +35,11 @@ def inject_utils(java_path, translations_size):
     with open(java_path, encoding="utf-8") as f:
         content = f.read()
 
-    # Add Gson imports after the last org.jetbrains import
+    # Add Gson and InputStreamReader imports after the last org.jetbrains import
     import_marker = "import org.jetbrains.annotations.Range;"
-    gson_imports = "import com.google.gson.Gson;\nimport com.google.gson.reflect.TypeToken;"
+    extra_imports = "import com.google.gson.Gson;\nimport com.google.gson.reflect.TypeToken;\nimport java.io.InputStreamReader;"
     if import_marker in content and "import com.google.gson.Gson;" not in content:
-        content = content.replace(import_marker, import_marker + "\n" + gson_imports)
+        content = content.replace(import_marker, import_marker + "\n" + extra_imports)
 
     # Add translation infrastructure after private Utils() {}
     utils_constructor = "    private Utils() {\n    }"

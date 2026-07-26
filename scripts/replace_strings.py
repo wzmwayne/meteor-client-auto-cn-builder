@@ -6,6 +6,11 @@ import sys
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_DIR = os.path.join(SCRIPT_DIR, "..")
 
+BLOCKLIST = {
+    "MeteorVertexFormats.java": {"Position", "Color", "Texture"},
+    "Utils.java": {"Items"},
+}
+
 def load_translations():
     path = os.path.join(SCRIPT_DIR, "translations.json")
     with open(path, encoding="utf-8") as f:
@@ -19,10 +24,11 @@ def load_translations():
         filtered[k] = v
     return filtered, raw
 
-def replace_literals(content, translations):
+def replace_literals(content, translations, filename):
+    blocked = BLOCKLIST.get(filename, set())
     def replace_match(m):
         inner = m.group(1)
-        if inner in translations:
+        if inner in translations and inner not in blocked:
             return '"' + translations[inner] + '"'
         return m.group(0)
 
@@ -72,8 +78,13 @@ def inject_utils(java_path, translations_size):
     # Hijack nameToTitle
     name_to_title = "public static String nameToTitle(String name) {\n        return Arrays.stream(name.split(\"-\")).map(StringUtils::capitalize).collect(Collectors.joining(\" \"));\n    }"
     hijacked = "public static String nameToTitle(String name) {\n        String title = Arrays.stream(name.split(\"-\")).map(StringUtils::capitalize).collect(Collectors.joining(\" \"));\n        return tr(title);\n    }"
-    if name_to_title in content and "return tr(title)" not in content:
+    if "return tr(title)" in content:
+        return  # already hijacked
+    if name_to_title in content:
         content = content.replace(name_to_title, hijacked)
+        print("  Injected nameToTitle hijack")
+    else:
+        print("  WARNING: nameToTitle pattern not found - upstream may have changed format")
 
     with open(java_path, "w", encoding="utf-8") as f:
         f.write(content)
@@ -102,11 +113,16 @@ def main():
             with open(path, encoding="utf-8") as f:
                 original = f.read()
 
-            modified = replace_literals(original, translations)
+            modified = replace_literals(original, translations, fname)
             if modified != original:
                 replaced = sum(1 for k in translations if f'"{k}"' in original and f'"{k}"' not in modified)
                 replaced_total += replaced
                 files_modified += 1
+                # Verify no blocked strings were replaced
+                blocked = BLOCKLIST.get(fname, set())
+                for b in blocked:
+                    if f'"{translations[b]}"' in modified and f'"{b}"' not in modified:
+                        print(f"  WARNING: blocked string {repr(b)} was replaced in {fname}!")
 
             with open(path, "w", encoding="utf-8") as f:
                 f.write(modified)

@@ -10,6 +10,7 @@ on:
         options:
           - full
           - patch-only
+          - replace-string
           - compile-original
         default: full
       build_number:
@@ -63,42 +64,48 @@ jobs:
       - name: Copy patches, scripts, fonts to upstream checkout
         if: ${{ inputs.mode != 'compile-original' }}
         run: |
-          cp -r builder/patches/*.patch meteor-client/
+          cp -r builder/patches/ meteor-client/patches/
           cp -r builder/scripts/ meteor-client/scripts/
           mkdir -p "meteor-client/src/main/resources/assets/meteor-client/fonts/"
           cp builder/fonts/*.ttf "meteor-client/src/main/resources/assets/meteor-client/fonts/"
 
-      - name: Apply patches
+      - name: Apply patches (font/)
         if: ${{ inputs.mode != 'compile-original' }}
         working-directory: meteor-client
         run: |
-          TRANSLATE_PATCHES="Utils.patch MeteorGuiTheme.patch WMeteorModule.patch"
-          for p in ../builder/patches/*.patch; do
-            name=$(basename "$p")
-            if [ "${{ inputs.mode }}" = "patch-only" ]; then
-              skip=false
-              for tp in $TRANSLATE_PATCHES; do
-                if [ "$name" = "$tp" ]; then skip=true; break; fi
-              done
-              if [ "$skip" = "true" ]; then
-                echo "Skipping $name (patch-only mode)"
-                continue
-              fi
-            fi
-            echo "Applying $name..."
+          for p in patches/font/*.patch; do
+            echo "Applying font/$(basename $p)..."
             if ! git apply "$p"; then
-              echo "::error::Failed to apply $name - upstream may have changed"
+              echo "::error::Failed to apply font/$(basename $p) - upstream may have changed"
               exit 1
             fi
           done
-          echo "All patches applied successfully"
+          echo "Font patches applied successfully"
+
+      - name: Apply patches (translate/)
+        if: ${{ inputs.mode == 'full' }}
+        working-directory: meteor-client
+        run: |
+          for p in patches/translate/*.patch; do
+            echo "Applying translate/$(basename $p)..."
+            if ! git apply "$p"; then
+              echo "::error::Failed to apply translate/$(basename $p) - upstream may have changed"
+              exit 1
+            fi
+          done
+          echo "Translate patches applied successfully"
 
       - name: Run translation
-        if: ${{ inputs.mode == 'full' }}
+        if: ${{ inputs.mode == 'full' || inputs.mode == 'replace-string' }}
         working-directory: meteor-client
         run: |
           pip install deep-translator -q
           python3 scripts/translate.py
+
+      - name: Replace strings at compile time
+        if: ${{ inputs.mode == 'replace-string' }}
+        working-directory: meteor-client
+        run: python3 scripts/replace_strings.py
 
       - name: Build with Gradle
         working-directory: meteor-client
@@ -117,7 +124,7 @@ jobs:
           retention-days: 30
 
       - name: Sync translations back to builder repo
-        if: ${{ inputs.mode == 'full' && !inputs.skip_sync }}
+        if: ${{ (inputs.mode == 'full' || inputs.mode == 'replace-string') && !inputs.skip_sync }}
         working-directory: builder
         run: |
           cp ../meteor-client/scripts/translations.json scripts/translations.json

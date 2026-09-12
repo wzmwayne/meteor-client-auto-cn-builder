@@ -1,8 +1,8 @@
 {
   "(highlight)%s": "(highlight)%s(default)",
   "(highlight)Worker %s(default): %s.": "(highlight)工作器 %s(default): %s。",
-  "+": null,
-  "-": null,
+  "+": "+",
+  "-": "-",
   "--- Bound Modules ((highlight)%d(default)) ---": "--- 已绑定模块 ((highlight)%d(default)) ---",
   "--- Commands ((highlight)%d(default)) ---": "--- 命令 ((highlight)%d(default)) ---",
   "--- Modules ((highlight)%d(default)) ---": "--- 模块 ((highlight)%d(default)) ---",
@@ -3216,5 +3216,5 @@
   "player.get_stat() requires 1 argument, got %d.": "player.get_stat()需要1个参数，得到了%d个。",
   "player.has_potion_effect() requires 1 argument, got %d.": "player.has_potion_effect()需要1个参数，得到了%d个。",
   "slider-handle": "滑块手柄",
-  "{} {}": null
+  "{} {}": "{} {}"
 }

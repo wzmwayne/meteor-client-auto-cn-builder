@@ -1,42 +1,18 @@
-# Meteor Client 中文构建器
+# 声明
 
-从 [MeteorDevelopment/meteor-client](https://github.com/MeteorDevelopment/meteor-client) master 分支自动构建中文汉化版。
+因学业原因，本人暂时放缓各项目的更新，学业告一段落后继续。
 
-## 工作流程
+- 账号下的仓库目前设为**归档（只读）**，推送与合并请求会暂停处理；
+- 暂停期间页面与功能不保证更新速度，恢复后照常维护；
+- 原有说明文档已移至 `_readme.md`，内容保持不变。
 
-1. 手动触发 GitHub Actions → 检出上游 master
-2. 应用 `patches/*.patch`（修改 6 个 Java 文件添加翻译支持）
-3. 复制 CJK 字体（WenQuanYi Zen Hei 完整版）
-4. 运行 `scripts/translate.py`（查表 → API fallback）
-5. Gradle 构建，上传 JAR 为 Artifact
-6. 更新 `scripts/translations.json` 回仓库（持久化 API 翻译结果）
+## 为什么关注 keepandroidopen.org
 
-## 手动触发
+安卓正在从「开放安装」走向受控分发：侧载限制、开发者验证、平台签名垄断，
+会直接压缩个人开发者与普通用户的空间。这与项目是否更新无关，值得持续关注。
 
-```bash
-gh workflow run build.yml -R wzmwayne/meteor-client-auto-cn-builder
-```
+<https://keepandroidopen.org>
 
-支持参数：
-- `build_number` — 构建号（默认自动生成）
-- `upstream_ref` — 上游分支/tag/commit（默认 master）
-- `skip_sync` — 跳过翻译回写（true/false）
+## 许可
 
-## 文件结构
-
-| 路径 | 说明 |
-|------|------|
-| `patches/*.patch` | 对上游 6 个 Java 文件的侵入式修改 |
-| `scripts/translate.py` | 翻译脚本：硬编码翻译表 → Google API fallback |
-| `scripts/translations.json` | 3213 条硬编码翻译（中英双语） |
-| `fonts/WenQuanYi Zen Hei.ttf` | 完整文泉驿正黑字体（17MB，包含全部字形防乱码） |
-| `.github/workflows/build.yml` | 构建工作流 |
-
-## 修改的 Java 文件
-
-- `Utils.java` — 翻译映射表、`tr()`/`trIfPresent()` 方法
-- `MeteorClient.java` — 加载翻译文件时机
-- `Command.java` — 命令标题/描述包装
-- `MeteorGuiTheme.java` — GUI 文本包装
-- `Fonts.java` — 添加 CJK 内置字体，设为默认
-- `Font.java` — CJK 字形范围（U+4E00–U+9FFF）
+放弃所有权利（Unlicense / 公有领域），可自由取用、修改与再分发。
